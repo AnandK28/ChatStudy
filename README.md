@@ -79,26 +79,22 @@ Client-server chat applications are foundational to real-time communication over
 ```
 import socket
 
-
 def client_program():
-    host = socket.gethostname()  # as both code is running on same pc
-    port = 5000  # socket server port number
+    host = socket.gethostname()
+    port = 5000
 
-    client_socket = socket.socket()  # instantiate
-    client_socket.connect((host, port))  # connect to the server
+    client_socket = socket.socket()
+    client_socket.connect((host, port))
 
-    message = input(" -> ")  # take input
+    message = input(" -> ")
 
     while message.lower().strip() != 'bye':
-        client_socket.send(message.encode())  # send message
-        data = client_socket.recv(1024).decode()  # receive response
+        client_socket.send(message.encode())
+        data = client_socket.recv(1024).decode()
+        print('Received from server: ' + data)
+        message = input(" -> ")
 
-        print('Received from server: ' + data)  # show in terminal
-
-        message = input(" -> ")  # again take input
-
-    client_socket.close()  # close the connection
-
+    client_socket.close()
 
 if __name__ == '__main__':
     client_program()
@@ -106,43 +102,40 @@ if __name__ == '__main__':
 ### SERVER :
 ```
 import socket
+
 def server_program():
-    # get the hostname
     host = socket.gethostname()
-    port = 5000  # initiate port no above 1024
+    port = 5000
 
-    server_socket = socket.socket()  # get instance
-    # look closely. The bind() function takes tuple as argument
-    server_socket.bind((host, port))  # bind host address and port together
-
-    # configure how many client the server can listen simultaneously
+    server_socket = socket.socket()
+    server_socket.bind((host, port))
     server_socket.listen(2)
-    conn, address = server_socket.accept()  # accept new connection
+    print("Server is listening...")
+
+    conn, address = server_socket.accept()
     print("Connection from: " + str(address))
+
     while True:
-        # receive data stream. it won't accept data packet greater than 1024 bytes
         data = conn.recv(1024).decode()
         if not data:
-            # if data is not received break
             break
-        print("from connected user: " + str(data))
-        data = input(' -> ')
-        conn.send(data.encode())  # send data to the client
+        print("Received from client: " + data)
+        data = input(" -> ")
+        conn.send(data.encode())
 
-    conn.close()  # close the connection
-
+    conn.close()
 
 if __name__ == '__main__':
     server_program()
 ```
 ## OUTPUT:
 ### CLIENT :
-![Screenshot 2024-05-08 084139](https://github.com/MSDharanish-23011819/ChatStudy/assets/147139454/429a2189-9759-44df-882d-f904dd2cf55a)
+
+![Screenshot 2025-03-22 113043](https://github.com/user-attachments/assets/b29d20be-c346-43ef-b196-dec23c4ffe87)
 
 
 ### SERVER :
-![Screenshot 2024-05-08 084152](https://github.com/MSDharanish-23011819/ChatStudy/assets/147139454/f87c9bcd-c773-451d-b74c-5931212d80e7)
-
+![Screenshot 2025-03-22 113053](https://github.com/user-attachments/assets/32d72d18-d4c2-46d7-9318-b4d8fc76eee6)
 
 
 ## Result:
